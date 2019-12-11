@@ -15,6 +15,7 @@ interface IStateToProps {
 // メンバにはどのアクションを実行するのかを定義する
 interface IDispatchToProps {
   addTodo: (todo: string) => void;
+  deleteTodo: (idx: number) => void;
 }
 
 // IStateToPropsとIDispatchToPropsの複合型を定義
@@ -32,7 +33,7 @@ class TodoContainer extends React.Component<IProps, {}> {
     // TodoComponentにpropsの値を詰めて返す
     const { todos } = this.props;
     return (
-      <TodoComponent todos={todos} onClickAddButton={this.onClickAddButton} />
+      <TodoComponent todos={todos} onClickAddButton={this.onClickAddButton} onClickDeleteButton={this.onClickDeleteButton} />
     );
   }
 
@@ -40,6 +41,12 @@ class TodoContainer extends React.Component<IProps, {}> {
   private onClickAddButton = (todo: string): void => {
     const { addTodo } = this.props;
     addTodo(todo);
+  };
+
+  // TodoComponentにわたすコールバック関数
+  private onClickDeleteButton = (idx: number): void => {
+    const { deleteTodo } = this.props;
+    deleteTodo(idx);
   };
 }
 
@@ -57,6 +64,9 @@ const mapDispatchToProps = (dispatch: Dispatch<Action>): IDispatchToProps => {
   return {
     addTodo: (todo: string) => {
       dispatch(todoActionCreator.addTodoAction(todo));
+    },
+    deleteTodo: (idx: number) => {
+      dispatch(todoActionCreator.deleteTodoAction(idx));
     }
   };
 };

@@ -1,6 +1,11 @@
 import { combineReducers, Reducer } from "redux";
 
-import { IAddTodoAction, TodoAction, TodoActionType } from "./action";
+import {
+  IAddTodoAction,
+  IDeleteTodoAction,
+  TodoAction,
+  TodoActionType
+} from "./action";
 import { IRootState, ITodoState } from "./store";
 
 // ITodoStateの初期データを作成
@@ -22,6 +27,14 @@ const todoReducer: Reducer<ITodoState> = (
       return {
         ...state,
         todos: state.todos.concat([addTodoAction.payload.todo])
+      };
+    case TodoActionType.DELETE_TODO:
+      const deleteTodoAction: IDeleteTodoAction = action;
+      const todos = state.todos.concat([]);
+      todos.splice(deleteTodoAction.payload.idx, 1);
+      return {
+        ...state,
+        todos
       };
     default:
       return state;

@@ -3,6 +3,7 @@ import * as React from 'react';
 interface IProps {
   todos: string[];
   onClickAddButton: (todo: string) => void;
+  onClickDeleteButton: (idx: number) => void;
 }
 
 interface IState {
@@ -30,7 +31,7 @@ export default class extends React.Component<IProps, IState> {
         <button onClick={this.onClickAddButton}>Add Todo</button>
         <ul>
           {todos.map((todo, i) => (
-            <li key={i}>{todo}</li>
+            <li key={i} onClick={() => this.onClickDeleteButton(i)}>{todo}</li>
           ))}
         </ul>
       </div>
@@ -48,5 +49,11 @@ export default class extends React.Component<IProps, IState> {
     const { onClickAddButton } = this.props;
     const { text } = this.state;
     onClickAddButton(text);
+    this.setState({ text: "" });
+  };
+
+  private onClickDeleteButton = (idx: number) => {
+    const { onClickDeleteButton } = this.props;
+    onClickDeleteButton(idx);
   };
 }
